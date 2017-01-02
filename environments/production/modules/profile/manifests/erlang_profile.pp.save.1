@@ -1,0 +1,7 @@
+class profile::erlang_profile {
+
+#  exec { 'Erlang OTP 19':
+#    command  => '$start-process C:\Users\ashwinder\Downloads\otp_win64_19.2.exe -ArgumentList /S -Wait',
+    provider => powershell
+#  }
+}

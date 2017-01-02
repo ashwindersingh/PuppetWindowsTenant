@@ -1,0 +1,8 @@
+class profile::erlang_profile {
+
+  exec { 'Installing Visual C++':
+#    command  => '$start-process C:\Users\ashwinder\Downloads\otp_win64_19.2.exe -ArgumentList /S -Wait',
+    command => "$_Start-Process -FilePath C:\Users\ashwinder\Downloads\vcredist_x64.exe -ArgumentList '/install /quiet' -Verb RunAs -Wait",
+    provider => powershell
+  }
+}

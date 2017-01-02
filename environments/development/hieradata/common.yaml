@@ -1,0 +1,6 @@
+---
+motd::message: 'Message from productio hierdata common yaml'
+ntp::ntp_regional_server:
+  - 'asia.pool.ntp.org'
+ntp::montior: true
+ntp::ntp_local_Server: '192.168.0.3'

@@ -1,0 +1,7 @@
+forge 'https://forgeapi.puppetlabs.com'
+
+mod 'puppet/windowsfeature',
+  :git => 'https://github.com/voxpupuli/puppet-windowsfeature.git',
+  :ref => 'v2.0.0'
+
+exclusion 'puppetlabs-stdlib'
