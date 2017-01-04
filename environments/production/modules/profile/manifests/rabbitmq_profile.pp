@@ -32,21 +32,24 @@ class profile::rabbitmq_profile {
       logoutput => true,
     }
 
-    notify { 'Enabling Managemtn UI' : }
+    if '${isRabbit_installed}' == false{
+      
+      notify { 'Enabling Managemtn UI' : }
 
-    exec { 'Enable Plugin':
-      command   => "$(cd '${rabbitmq_path}'; .\\rabbitmq-plugins.bat enable rabbitmq_management)",
-      provider  => powershell,
-      logoutput => true,
-    }
+      exec { 'Enable Plugin':
+        command   => "$(cd '${rabbitmq_path}'; .\\rabbitmq-plugins.bat enable rabbitmq_management)",
+        provider  => powershell,
+        logoutput => true,
+      }
 
-    notify { 'Creating user': }
+      notify { 'Creating user': }
 
-    exec { 'create user':
-      command   => "$(cd '${rabbitmq_path}'; .\\rabbitmqctl.bat add_user liquid arka.com@2015; .\\rabbitmqctl.bat set_user_tags liquid administrator; .\\rabbitmqctl.bat set_permissions -p / liquid '^liquid-.*' '.*' '.*')",
-      provider  => powershell,
-      logoutput => true,
-    }
+      exec { 'create user':
+        command   => "$(cd '${rabbitmq_path}'; .\\rabbitmqctl.bat add_user liquid arka.com@2015; .\\rabbitmqctl.bat set_user_tags liquid administrator; .\\rabbitmqctl.bat set_permissions -p / liquid '^liquid-.*' '.*' '.*')",
+        provider  => powershell,
+        logoutput => true,
+      }
+    }  
 
   }
 }
