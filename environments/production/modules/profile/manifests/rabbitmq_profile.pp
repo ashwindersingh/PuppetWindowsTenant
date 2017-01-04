@@ -27,7 +27,7 @@ class profile::rabbitmq_profile {
 
     exec { 'Installing RabbitMQ':
       command   => '$(Start-Process C:\Users\ashwinder\Downloads\rabbitmq-server-3.6.6.exe -ArgumentList /S -Verb RunAs -Wait)',
-      onlyif    => "$(if(Get-Service RabbitMQ -ErrorAction SilentlyContinue) { '$isRabbit_installed = true'; exit 1 } else { exit 0 })",
+      onlyif    => "$(if(Get-Service RabbitMQ -ErrorAction SilentlyContinue) { '$isRabbit_installed = true'; exit 1 } else { '$isRabbit_installed = false'; exit 0 })",
       provider  => powershell,
       logoutput => true,
     }
