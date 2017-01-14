@@ -25,7 +25,7 @@ class profile::rabbitmq_profile {
       logoutput => true,
     }
 
-    notify { 'Cehcking and Installing Rabbit MQ': }
+    notify { 'Checking and Installing Rabbit MQ': }
 
     exec { 'Installing RabbitMQ':
       command   => '$(Start-Process C:\Users\ashwinder\Downloads\rabbitmq-server-3.6.6.exe -ArgumentList /S -Verb RunAs -Wait)',

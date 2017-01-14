@@ -1,6 +1,6 @@
 class profile::solr_profile{
 
-  $isSolr_installed = false
+  $isSolr_installed
   $download_path = 'C:\Users\ashwinder\Downloads'
 
   notify { 'Checking If solr exist': }
@@ -13,7 +13,7 @@ class profile::solr_profile{
 
   notify { "$isSolr_installed": }
 
-  if '${isSolr_installed}' == 'false' {
+  if '${isSolr_installed}' == false {
 
     notify {'Downloading Solr Zip File' : }
 
