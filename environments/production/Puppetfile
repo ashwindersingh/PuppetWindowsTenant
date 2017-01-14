@@ -4,4 +4,10 @@ mod 'puppet/windowsfeature',
   :git => 'https://github.com/voxpupuli/puppet-windowsfeature.git',
   :ref => '2.0.0'
 
+mod 'cyberious-windows_java', '1.0.2'
+
+mod 'puppetlabs-powershell', '2.1.0'
+
+mod 'puppet-download_file', '2.0.0'
+
 exclusion 'puppetlabs-stdlib'

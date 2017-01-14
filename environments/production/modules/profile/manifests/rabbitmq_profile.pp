@@ -4,6 +4,8 @@ class profile::rabbitmq_profile {
   $service_name  = 'RabbitMQ'
   $rabbitmq_path = 'C:\Program Files\RabbitMQ Server\rabbitmq_server-3.6.6\sbin'
 
+  notify { 'Starting Rabbi MQ Setup': }
+
   if "${::operatingsystem}" == 'windows'{
 
     notify { 'Starting Erlang Installation': }
@@ -23,7 +25,7 @@ class profile::rabbitmq_profile {
       logoutput => true,
     }
 
-    notify { 'Installing Rabbit MQ': }
+    notify { 'Cehcking and Installing Rabbit MQ': }
 
     exec { 'Installing RabbitMQ':
       command   => '$(Start-Process C:\Users\ashwinder\Downloads\rabbitmq-server-3.6.6.exe -ArgumentList /S -Verb RunAs -Wait)',
@@ -33,7 +35,7 @@ class profile::rabbitmq_profile {
     }
 
     if '${isRabbit_installed}' == false{
-      
+
       notify { 'Enabling Managemtn UI' : }
 
       exec { 'Enable Plugin':
@@ -49,7 +51,8 @@ class profile::rabbitmq_profile {
         provider  => powershell,
         logoutput => true,
       }
-    }  
-
+    }
   }
+
+  notify { 'Ending  RabbitMq Setup': }
 }

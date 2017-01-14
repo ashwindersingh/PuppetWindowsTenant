@@ -1,0 +1,4 @@
+class role::liquid_role {
+  
+include solr_profile
+}

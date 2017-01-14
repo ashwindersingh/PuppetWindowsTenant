@@ -8,8 +8,8 @@ node default {
     include role::winserver
     notify { 'Finishing Windows Feature Installation': }
 
-    notify { 'Starting RabbitMQ SetUP' : }
-    include role::rabbitmq_role
-    notify { 'Finishing RabbitMQ SetUP' : }
+    notify { 'Starting Liquid Development  SetUP' : }
+    include role::liquid_role
+    notify { 'Finishing Liquid Development  SetUP' : }
   }
 }
