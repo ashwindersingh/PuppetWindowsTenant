@@ -5,4 +5,9 @@ class profile::windowsfeature_profile {
   windowsfeature { $iis_features:
     ensure => present,
   }
+
+  windows_java::jdk {'8u45':
+    ensure  => present,
+    default => true,
+  }
 }
