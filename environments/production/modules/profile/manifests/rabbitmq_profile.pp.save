@@ -1,6 +1,6 @@
 class profile::rabbitmq_profile {
 
-  $isRabbit_installed = false
+  $israbbit_installed = false
   $service_name  = 'RabbitMQ'
   $rabbitmq_path = 'C:\Program Files\RabbitMQ Server\rabbitmq_server-3.6.6\sbin'
 
@@ -34,7 +34,7 @@ class profile::rabbitmq_profile {
       logoutput => true,
     }
 
-    if ($israbbit_installed == false) {
+    if ($israbbit_installede{
 
       notify { 'Enabling Managemtn UI' : }
 

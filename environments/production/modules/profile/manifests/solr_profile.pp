@@ -1,26 +1,31 @@
 class profile::solr_profile{
 
-  $isSolr_installed = false
-  $download_path = 'C:\Users\ashwinder\Downloads'
+  $issolr_installed = false
+  $dest_path = 'C:\Users\ashwinder\Downloads'
+  $download_path = 'https://archive.apache.org/dist/lucene/solr/5.3.1/solr-5.3.1.zip'
+
 
   notify { 'Checking If solr exist': }
 
   exec { 'Checking Solr is installed':
-    command   => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { '$isSolr_installed = true'; } else { '$isSolr_installed = false'; })",
+    command   => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { '${issolr_installed} = true'; } else { '${issolr_installed} = false'; })",
     provider  => powershell,
     logoutput => true,
   }
 
-  notify { "$isSolr_installed": }
+  notify {'$issolr_installed': }
 
-  if ($isSolr_installed != $true) {
+  if (!$isolr_installed) {
 
     notify {'Downloading Solr Zip File' : }
 
-    download_file { "Download Solr Server 5.3" :
-      url                   => 'https://archive.apache.org/dist/lucene/solr/5.3.1/solr-5.3.1.zip',
-      destination_directory => "$download_path"
+    download_file { 'Download Solr Server 5.3' :
+      url                   => $download_path,
+      destination_directory => $dest_path
     }
 
+#    exec { 'Installing Solr':
+#      command =>
+#    }
   }
 }
