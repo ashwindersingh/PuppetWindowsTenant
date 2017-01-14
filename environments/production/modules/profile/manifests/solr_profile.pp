@@ -1,19 +1,19 @@
 class profile::solr_profile{
 
-  $isSolr_installed
+  $isSolr_installed = false
   $download_path = 'C:\Users\ashwinder\Downloads'
 
   notify { 'Checking If solr exist': }
 
   exec { 'Checking Solr is installed':
-    command   => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { '$isSolr_installed = true'; exit 1 } else { '$isSolr_installed = false'; exit 0 })",
+    command   => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { '$isSolr_installed = true'; } else { '$isSolr_installed = false'; })",
     provider  => powershell,
     logoutput => true,
   }
 
   notify { "$isSolr_installed": }
 
-  if '${isSolr_installed}' == false {
+  if ($isSolr_installed != $true) {
 
     notify {'Downloading Solr Zip File' : }
 
