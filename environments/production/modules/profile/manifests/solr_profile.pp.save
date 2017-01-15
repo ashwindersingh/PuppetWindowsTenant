@@ -1,9 +1,8 @@
 class profile::solr_profile{
 
   $issolr_installed = false
-  $dest_path        = 'C:\Users\ashwinder\Downloads'
-  $download_path    = 'http://artifactory.semanooor.com/artifactory/Softwares/Solr/solr-6.2.1.zip'
-  $nssm_path        = 'http://artifactory.semanooor.com/artifactory/Softwares/nssm64/nssm.exe'
+  $dest_path     = 'C:\Users\ashwinder\Downloads'
+  $download_path = 'http://artifactory.semanooor.com/artifactory/Softwares/Solr/solr-6.2.1.zip'
 
   notify { 'Checking If solr exist': }
 
@@ -22,13 +21,9 @@ class profile::solr_profile{
       destination_directory => $dest_path
     }
 
-    download_file { 'Download Nssm' :
-      url                   => $nssm_path,
-      destination_directory => $dest_path
-    }
+    notify { defined(File['D:\Solr\solr-6.2.1']) : }
 
-
-    if validate_absolute_path('D:\Solr\solr-6.2.1') {
+    if ! defined(File['D:\Solr\solr-6.2.1']) {
       notify {"Unzipping Solr":}
 
       exec { 'Unzipping  Solr':
@@ -36,13 +31,6 @@ class profile::solr_profile{
         provider  => powershell,
         logoutput => true
       }
-    }
-
-   notify { 'Installing Solr': }
-   exec { 'Installing Solr':
-      command   => "$('.\\${dest_path}\\nssm.exe install SolrServer D:\Solr\solr-6.2.1\bin\solr.cmd start -p -f 8983; nssm start SolrServer')",
-      provider  => powershell,
-      logoutput => true,
     }
 
   }
