@@ -2,7 +2,10 @@ class profile::rabbitmq_profile {
 
   $isRabbit_installed = false
   $service_name  = 'RabbitMQ'
+  $erland_download_path = 'http://artifactory.semanooor.com/artifactory/Softwares/Erlang/otp_win64_19.2.exe'
+  $rabbitmq_download_path = 'http://artifactory.semanooor.com/artifactory/Softwares/RabbitMq/rabbitmq-server-3.6.6.exe'
   $rabbitmq_path = 'C:\Program Files\RabbitMQ Server\rabbitmq_server-3.6.6\sbin'
+  $dest_path  = 'D:\Softwares'
 
   notify { 'Starting Rabbi MQ Setup': }
 
@@ -10,8 +13,13 @@ class profile::rabbitmq_profile {
 
     notify { 'Starting Erlang Installation': }
 
+    download_file { 'Download Erlang' :
+      url                   => $erland_download_path,
+      destination_directory => $dest_path
+    }
+
     exec { 'Installing Erlang':
-      command   => '$(Start-Process C:\Users\ashwinder\Downloads\otp_win64_19.2.exe -ArgumentList /S -Verb RunAs -Wait)',
+      command   => '$(Start-Process D:\Softwares\otp_win64_19.2.exe -ArgumentList /S -Verb RunAs -Wait)',
       unless    => '$(If((Test-Path "C:\Program Files\erl8.2\bin\erl.exe") -eq $true) { exit 0 } Else { exit 1 })',
       provider  => powershell,
       logoutput => true,
@@ -27,8 +35,13 @@ class profile::rabbitmq_profile {
 
     notify { 'Checking and Installing Rabbit MQ': }
 
+    download_file { 'Download RabbitMq' :
+      url                   => $rabbitmq_download_path,
+      destination_directory => $dest_path
+    }
+
     exec { 'Installing RabbitMQ':
-      command   => '$(Start-Process C:\Users\ashwinder\Downloads\rabbitmq-server-3.6.6.exe -ArgumentList /S -Verb RunAs -Wait)',
+      command   => '$(Start-Process D:\Softwares\rabbitmq-server-3.6.6.exe -ArgumentList /S -Verb RunAs -Wait)',
       onlyif    => "$(if(Get-Service RabbitMQ -ErrorAction SilentlyContinue) { '$israbbit_installed = true'; exit 1 } else { '$israbbit_installed = false'; exit 0 })",
       provider  => powershell,
       logoutput => true,

@@ -1,7 +1,7 @@
 class profile::solr_profile{
 
   $issolr_installed = false
-  $dest_path        = 'C:\Users\ashwinder\Downloads'
+  $dest_path        = 'D:\Softwares'
   $download_path    = 'http://artifactory.semanooor.com/artifactory/Softwares/Solr/solr-6.2.1.zip'
   $nssm_path        = 'http://artifactory.semanooor.com/artifactory/Softwares/nssm64/nssm.exe'
 
@@ -48,13 +48,13 @@ class profile::solr_profile{
         logoutput => true,
       }
 
-      if(isolr_installed) {
-        exec { 'Create the Solr Core': 
-          command   => "$()",
-          provider  => powershell,
-          logoutput => true        
-        }
-      }
+ #     if(isolr_installed) {
+ #       exec { 'Create the Solr Core': 
+ #         command   => "$()",
+ #         provider  => powershell,
+ #         logoutput => true        
+ #      }
+ #     }
 
     }
 
