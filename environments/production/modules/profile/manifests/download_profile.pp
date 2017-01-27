@@ -1,7 +1,7 @@
 class profile::download_profile {
 
   $dest_path              = 'D:\Softwares'
-  $nssm_download_path     = 'http://artifactory.semanooor.com/artifactory/Softwares/nssm64/nssm.exe'
+  $nssm_download_path     = 'http://artifactory.semanooor.com/artifactory/Softwares/nssm32/nssm.exe'
   $solr_download_path     = 'http://artifactory.semanooor.com/artifactory/Softwares/Solr/solr-6.2.1.zip'
   $erlang_download_path   = 'http://artifactory.semanooor.com/artifactory/Softwares/Erlang/otp_win64_19.2.exe'
   $rabbitmq_download_path = 'http://artifactory.semanooor.com/artifactory/Softwares/RabbitMq/rabbitmq-server-3.6.6.exe'
