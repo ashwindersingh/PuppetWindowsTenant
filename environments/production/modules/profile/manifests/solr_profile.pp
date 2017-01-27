@@ -18,10 +18,11 @@ class profile::solr_profile{
     logoutput => true,
   }
 
-#  exec { 'Checking Solr is Start':
-#    command   => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { '${issolr_installed} = true'; } else { '${issolr_installed} = false'; })",
-#    provider  => powershell,
-#    logoutput => true,
-#  }
+  exec { 'Creating Solr Core':
+    command   => "$(cd D:\\Solr\\solr-6.2.1\\bin; solr.cmd create -c Liquid;)",
+    onlyif    => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { exit 1; } else { exit 0; })",
+    provider  => powershell,
+    logoutput => true,
+  }
 
 }
