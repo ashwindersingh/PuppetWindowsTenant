@@ -1,6 +1,6 @@
 class profile::rabbitmq_profile {
 
-  $israbbit_installed     = $false
+  $israbbit_installed     = 'false'
   $service_name           = 'RabbitMQ'
   $dest_path              = 'D:\Softwares'
   $rabbitmq_path          = 'C:\Program Files\RabbitMQ Server\rabbitmq_server-3.6.6\sbin'
@@ -29,18 +29,19 @@ class profile::rabbitmq_profile {
     notify { 'Checking and Installing Rabbit MQ': }
 
     exec { 'Checking If RabbitMQ is installed':
-      command    => '$(if(Get-Service RabbitMQ -ErrorAction SilentlyContinue) { '${israbbit_installed} = $true'; } else { '${israbbit_installed} = $false'; })',
+      command    => '$(if(Get-Service RabbitMQ -ErrorAction SilentlyContinue) { $israbbit_installed = "true"; } else { $israbbit_installed = "false"; })',
       provider   => powershell,
       logoutput  => true,
     }
 
     exec { 'Installing RabbitMQ':
       command   => '$(Start-Process D:\Softwares\rabbitmq-server-3.6.6.exe -ArgumentList /S -Verb RunAs -Wait)',
+      onlyif    => "$(if(Get-Service RabbitMQ -ErrorAction SilentlyContinue) { exit 1; } else { exit 0; })",
       provider  => powershell,
       logoutput => true,
     }
 
-    if (!$israbbit_installed) {
+    if ("${israbbit_installed}" == 'false') {
 
       notify { 'Creating user and enabling mangement ui': }
 

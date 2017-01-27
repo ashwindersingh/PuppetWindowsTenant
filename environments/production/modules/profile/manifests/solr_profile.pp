@@ -11,7 +11,7 @@ class profile::solr_profile{
     logoutput => true,
   }
 
-  if (!$isolr_installed) {
+  if (($isolr_installed) -eq $false) {
 
     if validate_absolute_path('D:\Solr\solr-6.2.1') {
       notify {"Unzipping Solr":}

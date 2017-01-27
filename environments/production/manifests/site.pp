@@ -9,7 +9,7 @@ node default {
     notify { 'Starting Liquid Development  SetUP' : }
 
     include role::liquid_role
-    
+
     notify { 'Finishing Liquid Development  SetUP' : }
   }
 }
