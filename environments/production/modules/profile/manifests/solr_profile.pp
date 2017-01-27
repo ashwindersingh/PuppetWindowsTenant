@@ -2,8 +2,6 @@ class profile::solr_profile{
 
   $issolr_installed = false
   $dest_path        = 'D:\Softwares'
-  $download_path    = 'http://artifactory.semanooor.com/artifactory/Softwares/Solr/solr-6.2.1.zip'
-  $nssm_path        = 'http://artifactory.semanooor.com/artifactory/Softwares/nssm64/nssm.exe'
 
   notify { 'Checking If solr exist': }
 
@@ -14,18 +12,6 @@ class profile::solr_profile{
   }
 
   if (!$isolr_installed) {
-
-    notify {'Downloading Solr Zip File' : }
-
-    download_file { 'Download Solr Server 5.3' :
-      url                   => $download_path,
-      destination_directory => $dest_path
-    }
-
-    download_file { 'Download Nssm' :
-      url                   => $nssm_path,
-      destination_directory => $dest_path
-    }
 
     if validate_absolute_path('D:\Solr\solr-6.2.1') {
       notify {"Unzipping Solr":}
@@ -47,15 +33,6 @@ class profile::solr_profile{
         provider  => powershell,
         logoutput => true,
       }
-
- #     if(isolr_installed) {
- #       exec { 'Create the Solr Core':
- #         command   => "$()",
- #         provider  => powershell,
- #         logoutput => true
- #      }
- #     }
-
     }
 
   }

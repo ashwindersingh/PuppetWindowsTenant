@@ -6,12 +6,10 @@ node default {
 
     include stdlib
 
-    notify { 'Starting Windows Feature Installation': }
-    include role::winserver
-    notify { 'Finishing Windows Feature Installation': }
-
     notify { 'Starting Liquid Development  SetUP' : }
+
     include role::liquid_role
+    
     notify { 'Finishing Liquid Development  SetUP' : }
   }
 }
