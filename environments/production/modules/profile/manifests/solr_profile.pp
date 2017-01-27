@@ -1,39 +1,28 @@
 class profile::solr_profile{
 
-  $issolr_installed = false
-  $dest_path        = 'D:\Softwares'
+  $dest_path = 'D:\Softwares'
 
-  notify { 'Checking If solr exist': }
+  notify {"Unzipping Solr":}
+  exec { 'Unzipping  Solr':
+    command   => "$(Add-Type -assembly 'system.io.compression.filesystem'; [io.compression.zipfile]::ExtractToDirectory('${dest_path}\\solr-6.2.1.zip','D:\Solr'))",
+    unless    => '$(If((Test-Path "D:\Solr\solr-6.2.1") -eq $true) { exit 0 } Else { exit 1 })',
+    provider  => powershell,
+    logoutput => true
+  }
 
-  exec { 'Checking Solr is installed':
-    command   => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { '${issolr_installed} = true'; } else { '${issolr_installed} = false'; })",
+  notify { 'Installing Solr': }
+  exec { 'Installing Solr':
+    command   => "$('.\\${dest_path}\\nssm.exe install SolrServer D:\Solr\solr-6.2.1\bin\solr.cmd start -p -f 8983; nssm start SolrServer')",
+    onlyif    => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { exit 1; } else { exit 0; })",
     provider  => powershell,
     logoutput => true,
   }
 
-  if (($isolr_installed) -eq $false) {
-
-    if validate_absolute_path('D:\Solr\solr-6.2.1') {
-      notify {"Unzipping Solr":}
-      exec { 'Unzipping  Solr':
-        command   => "$(Add-Type -assembly 'system.io.compression.filesystem'; [io.compression.zipfile]::ExtractToDirectory('${dest_path}\\solr-6.2.1.zip','D:\Solr'))",
-        provider  => powershell,
-        logoutput => true
-      }
-
-      notify { 'Installing Solr': }
-      exec { 'Installing Solr':
-        command   => "$('.\\${dest_path}\\nssm.exe install SolrServer D:\Solr\solr-6.2.1\bin\solr.cmd start -p -f 8983; nssm start SolrServer')",
-        provider  => powershell,
-        logoutput => true,
-      }
-
-      exec { 'Checking Solr is Start':
-        command   => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { '${issolr_installed} = true'; } else { '${issolr_installed} = false'; })",
-        provider  => powershell,
-        logoutput => true,
-      }
-    }
-
+  exec { 'Checking Solr is Start':
+    command   => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { '${issolr_installed} = true'; } else { '${issolr_installed} = false'; })",
+    onlyif    => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { exit 1; } else { exit 0; })",
+    provider  => powershell,
+    logoutput => true,
   }
+
 }
