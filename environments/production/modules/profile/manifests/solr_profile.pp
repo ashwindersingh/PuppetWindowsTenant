@@ -49,10 +49,10 @@ class profile::solr_profile{
       }
 
  #     if(isolr_installed) {
- #       exec { 'Create the Solr Core': 
+ #       exec { 'Create the Solr Core':
  #         command   => "$()",
  #         provider  => powershell,
- #         logoutput => true        
+ #         logoutput => true
  #      }
  #     }
 

@@ -1,11 +1,11 @@
 class profile::rabbitmq_profile {
 
-  $isRabbit_installed = false
-  $service_name  = 'RabbitMQ'
-  $erland_download_path = 'http://artifactory.semanooor.com/artifactory/Softwares/Erlang/otp_win64_19.2.exe'
+  $israbbit_installed     = $false
+  $service_name           = 'RabbitMQ'
+  $erlang_download_path   = 'http://artifactory.semanooor.com/artifactory/Softwares/Erlang/otp_win64_19.2.exe'
   $rabbitmq_download_path = 'http://artifactory.semanooor.com/artifactory/Softwares/RabbitMq/rabbitmq-server-3.6.6.exe'
-  $rabbitmq_path = 'C:\Program Files\RabbitMQ Server\rabbitmq_server-3.6.6\sbin'
-  $dest_path  = 'D:\Softwares'
+  $rabbitmq_path          = 'C:\Program Files\RabbitMQ Server\rabbitmq_server-3.6.6\sbin'
+  $dest_path              = 'D:\Softwares'
 
   notify { 'Starting Rabbi MQ Setup': }
 
@@ -13,9 +13,15 @@ class profile::rabbitmq_profile {
 
     notify { 'Starting Erlang Installation': }
 
+    if ! defined(File["${dest_path}"]){
+      file { "${dest_path}":
+        ensure => directory,
+      }
+    }
+
     download_file { 'Download Erlang' :
-      url                   => $erland_download_path,
-      destination_directory => $dest_path
+      url                   => "${erlang_download_path}",
+      destination_directory => "${dest_path}",
     }
 
     exec { 'Installing Erlang':
@@ -36,33 +42,29 @@ class profile::rabbitmq_profile {
     notify { 'Checking and Installing Rabbit MQ': }
 
     download_file { 'Download RabbitMq' :
-      url                   => $rabbitmq_download_path,
-      destination_directory => $dest_path
+      url                   => "${rabbitmq_download_path}",
+      destination_directory => "${dest_path}"
+    }
+
+    exec { 'Checking If RabbitMQ is installed':
+      command    => '$(if(Get-Service RabbitMQ -ErrorAction SilentlyContinue) { $israbbit_installed = $true; } else { $israbbit_installed = $false; })',
+      provider   => powershell,
+      logoutput  => true,
     }
 
     exec { 'Installing RabbitMQ':
       command   => '$(Start-Process D:\Softwares\rabbitmq-server-3.6.6.exe -ArgumentList /S -Verb RunAs -Wait)',
-      onlyif    => "$(if(Get-Service RabbitMQ -ErrorAction SilentlyContinue) { '$israbbit_installed = true'; exit 1 } else { '$israbbit_installed = false'; exit 0 })",
       provider  => powershell,
       logoutput => true,
     }
 
-    if ($israbbit_installed == false) {
+    if ($israbbit_installed) {
 
-      notify { 'Enabling Managemtn UI' : }
-
-      exec { 'Enable Plugin':
-        command   => "$(cd '${rabbitmq_path}'; .\\rabbitmq-plugins.bat enable rabbitmq_management)",
-        provider  => powershell,
-        logoutput => true,
-      }
-
-      notify { 'Creating user': }
+      notify { 'Creating user and enabling mangement ui': }
 
       exec { 'create user':
-        command   => "$(cd '${rabbitmq_path}'; .\\rabbitmqctl.bat add_user liquid arka.com@2015; .\\rabbitmqctl.bat set_user_tags liquid administrator; .\\rabbitmqctl.bat set_permissions -p / liquid '^liquid-.*' '.*' '.*')",
+        command   => "$(cd '${rabbitmq_path}'; .\\rabbitmq-plugins.bat enable rabbitmq_management; .\\rabbitmqctl.bat add_user liquid arka.com@2015; .\\rabbitmqctl.bat set_user_tags liquid administrator; .\\rabbitmqctl.bat set_permissions -p / liquid '^liquid-.*' '.*' '.*')",
         provider  => powershell,
-        logoutput => true,
       }
     }
   }
