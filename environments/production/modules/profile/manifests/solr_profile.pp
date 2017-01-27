@@ -12,7 +12,7 @@ class profile::solr_profile{
 
   notify { 'Installing Solr': }
   exec { 'Installing Solr':
-    command   => "$('.\\${dest_path}\\nssm.exe install SolrServer D:\Solr\solr-6.2.1\bin\solr.cmd start -p -f 8983; nssm start SolrServer')",
+    command   => "$('.\\${dest_path}\\nssm.exe install SolrServer D:\\Solr\\solr-6.2.1\\bin\\solr.cmd start -p -f 8983; nssm start SolrServer')",
     onlyif    => "$(if(Get-Service SolrServer -ErrorAction SilentlyContinue) { exit 1; } else { exit 0; })",
     provider  => powershell,
     logoutput => true,
