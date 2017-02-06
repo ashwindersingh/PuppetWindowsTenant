@@ -46,7 +46,7 @@ class profile::rabbitmq_profile {
       notify { 'Creating user and enabling mangement ui': }
 
       exec { 'create user':
-        command   => "$(cd '${rabbitmq_path}'; .\\rabbitmq-plugins.bat enable rabbitmq_management; .\\rabbitmqctl.bat add_user liquid arka.com@2015; .\\rabbitmqctl.bat set_user_tags liquid administrator; .\\rabbitmqctl.bat set_permissions -p / liquid '^liquid-.*' '.*' '.*')",
+        command   => "$(cd '${rabbitmq_path}'; .\\rabbitmq-plugins.bat enable rabbitmq_management; .\\rabbitmqctl.bat add_user liquid liquid@2016; .\\rabbitmqctl.bat set_user_tags liquid administrator; .\\rabbitmqctl.bat set_permissions -p / liquid '^liquid-.*' '.*' '.*')",
         provider  => powershell,
       }
     }
